@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Title</title>
+</head>
+<body>
+    <strong>Username:</strong> <%= data.screenname %><br>
+    <strong>Tweet:</strong> <%= data.body %><br>
+    <strong>Date:</strong> <%= data.date %><br>
+    <strong>Time:</strong> <%= data.time %><br>
+
+    <ul>
+        <% statuses.forEach((tweet) => { %>
+            <li><%= tweet.text %></li>
+        <% }) %>
+    </ul>
+</body>
