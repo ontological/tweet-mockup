@@ -6,11 +6,11 @@
     <title>Title</title>
 </head>
 <body>
-    <form id="submission-form" method="post" action="verify">
+    <form id="submission-form" method="get" action="verify">
         <label for="screen-name">Twitter Username</label><br>
-        <input id="screen-name" name="screenname" /><br>
+        <input id="screen-name" name="screenname" required /><br>
         <label for="tweet-body">Tweet</label><br>
-        <textarea cols="50" rows="5" id="tweet-body" name="body"></textarea><br>
+        <textarea cols="50" rows="5" id="tweet-body" name="body" required></textarea><br>
         <label for="tweet-date">Date</label>
         <input id="tweet-date" name="date" type="date" />
         <label for="tweet-time">Time</label>

@@ -1,5 +1,4 @@
 let twitter = require('twitter');
-let bodyParser = require('body-parser');
 
 // Setup Twitter client
 let client = new twitter({
@@ -9,23 +8,21 @@ let client = new twitter({
     access_token_secret: 'kEtSn8dF6lMK7lQlMNOBmdGsm5yaAftwPhl2kwxY3UMsF'
 });
 
-// Setup POST parser
-let urlencodedParser = bodyParser.urlencoded({ extended: false });
-
-
 module.exports = (app) => {
-    app.post('/verify', urlencodedParser, (req, res) => {
-        console.log(req.body);
+    app.get('/verify', (req, res) => {
+        if(req.query.screenname) {
+            let params = {screen_name: req.query.screenname, count: 200};
 
-        let params = {screen_name: req.body.screenname};
+            client.get('statuses/user_timeline', params, function(error, tweets, response) {
+                if (error) {
+                    console.log('Twitter Error:');
+                    console.log(error);
+                    res.send(error);
+                    return;
+                }
 
-        client.get('statuses/user_timeline', params, function(error, tweets, response) {
-            if (error) {
-                console.log(error);
-                res.send("Error");
-            }
-            console.log(tweets);
-            res.render('verify', {data: req.body, statuses: tweets})
-        });
+                res.render('verify', {data: req.query, statuses: tweets})
+            });
+        }
     });
 };

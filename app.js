@@ -1,17 +1,23 @@
-let express = require('express');
-let ejs = require('ejs');
-let twitterController = require('./controllers/TwitterController');
+const express = require('express');
+//const ejs = require('ejs');
+const twitterController = require('./controllers/TwitterController');
+
+
+const PORT = 8000;
+
 
 // Setup module vars
-let app = express();
+const app = express();
 
 // Setup controllers
 twitterController(app);
 
 // Setup express
 app.set('view engine', 'ejs');
-app.listen(8000);
+app.listen(PORT);
+console.log(`Server started, listening on port ${PORT}...`);
 
+app.use('/assets', express.static('assets'));
 
 app.get('/', (req, res) => {
     res.render('index');

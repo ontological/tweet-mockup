@@ -16,7 +16,6 @@
     "url": "https://github.com/ontological/tweet-mockup/issues"
   },
   "dependencies": {
-    "body-parser": "^1.17.2",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
     "twitter": "^1.7.1"

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/style.css">
     <title>Title</title>
 </head>
 <body>
@@ -11,9 +11,18 @@
     <strong>Date:</strong> <%= data.date %><br>
     <strong>Time:</strong> <%= data.time %><br>
 
-    <ul>
-        <% statuses.forEach((tweet) => { %>
-            <li><%= tweet.text %></li>
-        <% }) %>
-    </ul>
+    <% if(statuses.length > 0) { %>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Tweet</th>
+            </tr>
+            <% statuses.forEach((tweet) => { %>
+                <tr>
+                    <td><%= tweet.created_at %></td>
+                    <td><%= tweet.text %></td>
+                </tr>
+            <% }) %>
+        </table>
+    <% } %>
 </body>
