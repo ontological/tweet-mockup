@@ -1,12 +1,7 @@
-let twitter = require('twitter');
+const Twitter = require('twitter');
 
 // Setup Twitter client
-let client = new twitter({
-    consumer_key: 'qDrWd68YbECD76Td1Brg0YJZa',
-    consumer_secret: 'z1KNxQ2eGyxTaqF5iq8icPgI0VSDfh6TEJgpGTjiOkNvA7Q29T',
-    access_token_key: '17305473-Z6uPaAXZOK78WS78wspuozVpGKKunlyY5vMucz2ym',
-    access_token_secret: 'kEtSn8dF6lMK7lQlMNOBmdGsm5yaAftwPhl2kwxY3UMsF'
-});
+const client = new Twitter(require('../private/Keys').twitterKeys);
 
 module.exports = (app) => {
     app.get('/verify', (req, res) => {
@@ -25,4 +20,8 @@ module.exports = (app) => {
             });
         }
     });
+};
+
+module.exports.getVerifiedUsers = () => {
+
 };
