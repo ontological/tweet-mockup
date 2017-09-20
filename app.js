@@ -1,47 +1,46 @@
 const express = require('express');
-const twitterController = require('./controllers/TwitterController');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
+const index = require('./routes/index');
+const api = require('./routes/api');
 
-const PORT = 8000;
-
-
-// Setup module vars
 const app = express();
 
-// Setup controllers
-twitterController(app);
-
-// Setup express
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.listen(PORT);
-console.log(`Server started, listening on port ${PORT}...`);
 
-app.use('/assets', express.static('assets'));
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-    res.render('index');
+app.use('/', index);
+app.use('/api', api);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
+// error handler
+app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
 
-
-
-/*
-let http = require('http');
-let fs = require('fs');
-
-let onRequest = (request, response) => {
-    if(request.method === 'GET' && request.url === '/') {
-        response.writeHead(200, {'Content-Type': 'text/html'});
-        fs.createReadStream('./index.html').pipe(response);
-    } else {
-        response.writeHead(404);
-        response.write('File not found!');
-        response.end();
-    }
-};
-
-http.createServer(onRequest).listen(8000);
-
-console.log('Server is running...');
-*/
+module.exports = app;

@@ -3,25 +3,26 @@ const Twitter = require('twitter');
 // Setup Twitter client
 const client = new Twitter(require('../private/Keys').twitterKeys);
 
-module.exports = (app) => {
-    app.get('/verify', (req, res) => {
-        if(req.query.screenname) {
-            let params = {screen_name: req.query.screenname, count: 200};
+module.exports.getTweets = (screenname, res) => {
+    // Params for Twitter API.
+    let params = {screen_name: screenname, count: 200};
 
-            client.get('statuses/user_timeline', params, function(error, tweets, response) {
-                if (error) {
-                    console.log('Twitter Error:');
-                    console.log(error);
-                    res.send(error);
-                    return;
-                }
+    // Get tweets from Twitter API.
+    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+        // If Twitter API error.
+        if(error) {
+            console.log('Twitter error:');
+            console.log(error);
 
-                res.render('verify', {data: req.query, statuses: tweets})
-            });
+            res.json({'error': 'Twitter error'});
+            return;
         }
+
+        // Sending only Tweets. Till we get searching done.
+        parsed = tweets.map((tweet) => {
+            return {date: tweet.created_at, text: tweet.text};
+        });
+
+        res.json({'screenname': screenname, 'tweets': parsed});
     });
-};
-
-module.exports.getVerifiedUsers = () => {
-
 };
