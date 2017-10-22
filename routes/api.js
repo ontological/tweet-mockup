@@ -17,7 +17,7 @@ router.get('/verify', (req, res) => {
         return;
     }
 
-    twitterController.getTweets(screenname, res);
+    twitterController.getTweets(res, screenname);
 });
 
 module.exports = router;
