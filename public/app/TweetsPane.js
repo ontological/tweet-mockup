@@ -32,19 +32,24 @@ export class TweetsPane extends React.Component {
         this.getTweets(nextProps.screenname);
     }
 
+    // date is likely not the right key
     render() {
         return(
             <table>
-                <tr>
-                    <th>Date</th>
-                    <th>Tweet</th>
-                </tr>
-                {this.state.data.map(tweet => (
+                <thead>
                     <tr>
-                        <td>{tweet.date}</td>
-                        <td>{tweet.text}</td>
+                        <th>Date</th>
+                        <th>Tweet</th>
                     </tr>
-                ))}
+                </thead>
+                <tbody>
+                    {this.state.data.map(tweet => (
+                        <tr key={tweet.date}>
+                            <td>{tweet.date}</td>
+                            <td>{tweet.text}</td>
+                        </tr>
+                    ))}
+                </tbody>
 
             </table>
         );
