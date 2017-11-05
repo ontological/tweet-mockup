@@ -21,8 +21,8 @@ class TweetMatcher {
         // Remove links then downcase
         input = input.replace(urlRegex, '').toLowerCase();
 
-        // Get user mentions and hashtags then remove
-        const removeFirstChar = (str) => str.slice(1);
+        // Get user mentions and hashtags then remove hashtag, make lowercase
+        const removeFirstChar = (str) => str.slice(1).toLowerCase();
 
         userMentions = input.match(/@\w+/g);
         this.userMentions = userMentions ? userMentions.map(removeFirstChar) : [];
@@ -52,6 +52,20 @@ class TweetMatcher {
         return counter;
     }
 
+    // Given 2 arrays, return True if each value is equal (case-sensitive)
+    static arrayEquals(arr1, arr2) {
+        if(arr1.length !== arr2.length) {
+            return false;
+        }
+        for(let i = arr1.length; i--;) {
+            if(arr1[i] !== arr2[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 
     // Method to determine whether a something from Twitter API matches the object.
@@ -60,7 +74,14 @@ class TweetMatcher {
         let links = apiObj.entities.urls.map((url) => url.display_url);
         let userMentions = apiObj.entities.user_mentions.map((mention) => mention.screen_name.toLowerCase());
 
+        // console.log("hashtag comparsions:"); // TODO: remove
+        // console.log(hashtags);
+        // console.log(this.hashtags)
 
+        if(TweetMatcher.arrayEquals(hashtags, this.hashtags)) {
+            return true;
+        }
+        return false;
     }
 }
 

@@ -30,7 +30,7 @@ const getTweets = (res, screenname, maxId) => {
     });
 };
 
-const searchTweets = (res, screenname, searchText, date) => {
+const searchTweets = (res, screenname, searchText, date, matches=[]) => {
     let params = {screen_name: screenname, count: 200};
 
     if(typeof searchText === 'string') {
@@ -39,7 +39,7 @@ const searchTweets = (res, screenname, searchText, date) => {
 
     client.get('statuses/user_timeline', params, (error, tweets, response) => {
         if(error) {
-            console.error(err);
+            console.error(error);
             res.json({error: 'Twitter error.'});
             return;
         } else if(tweets.length === 0) {
@@ -49,13 +49,14 @@ const searchTweets = (res, screenname, searchText, date) => {
 
         for(i = 0; i < tweets.length; i++) {
             if(searchText.match(tweets[i])) {
-
-
+                matches.concat(tweets[i]);
             }
         }
 
+        return matches;
+
         // Get next set of Tweets
-        searchTweets(screenname, searchText, date, subOneString(tweets.pop().id_str));
+        // searchTweets(screenname, searchText, date, subOneString(tweets.pop().id_str));
     });
 };
 
@@ -84,5 +85,6 @@ const subOneString = (s) => {
 
 module.exports = {
     getTweets,
+    searchTweets,
     subOneString,
 };
