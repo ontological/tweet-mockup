@@ -14,9 +14,14 @@ export class TweetsPane extends React.Component {
     }
 
     // Get data from our API
-    getTweets(screenname) {
-        axios.get(`/api/verify?screenname=${screenname}`)
-            .then(res => {
+    getTweets(screenname, body, date) {
+        axios.get('/api/verify', {
+            params: {
+                screenname: screenname,
+                body: body,
+                date: date
+                }
+            }).then(res => {
                 const data = res.data.tweets;
                 this.setState({ data: data });
             });
@@ -24,12 +29,12 @@ export class TweetsPane extends React.Component {
 
     // Get data on first render.
     componentDidMount() {
-        this.getTweets(this.props.screenname);
+        this.getTweets(this.props.screenname, this.props.body, this.props.date);
     }
 
     // Get data when component is updated.
     componentWillReceiveProps(nextProps) {
-        this.getTweets(nextProps.screenname);
+      this.getTweets(this.props.screenname, this.props.body, this.props.date);
     }
 
     // date is likely not the right key
